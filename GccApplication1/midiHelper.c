@@ -11,8 +11,8 @@
 /* https://www.arduino.cc/en/Tutorial/Midi */
 void midiCommand(char channel, char cmd, char pitch){
 	
-	char chanelCommand = (cmd && 0xF0) + (channel && 0x0F);
-	
+	//char chanelCommand = cmd || (channel && 0x0F);
+	char chanelCommand = 0x90;
 	//push channel and command
 	putByte(chanelCommand);
 	//push pitch
@@ -23,10 +23,11 @@ void midiCommand(char channel, char cmd, char pitch){
 
 void midiCommandToQueue(char channel, char cmd, char pitch){
 		
-		char chanelCommand = (cmd && 0xF0) + (channel && 0x0F);
+		char chanelCommand = cmd + (channel && 0x0F);
 		
 		//push channel and command
 		writeCircularQueue(chanelCommand);
+		UCSR0B |= (1 << TXCIE0);
 		//push pitch
 		writeCircularQueue(pitch);
 		//push velocity

@@ -63,6 +63,9 @@ void initUARTInterruptBased(void)
 
 	// Set frame format = 8-N-1
 	UCSR0C = (_DATA << UCSZ00);
+	
+	// Set up interrupt
+	//UCSR0B |= (1 << TXCIE0);
 
 }
 /*! \brief Returns a byte from the serial buffer
@@ -84,7 +87,7 @@ uint8_t getByte(void)
 void putByte(unsigned char data)
 {
 	// Stay here until data buffer is empty
-	while (!(UCSR0A & _BV(UDRE0)));
+	while (!(UCSR0A & (1<<UDRE0)));
 	UDR0 = (unsigned char) data;
 
 }

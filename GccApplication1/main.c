@@ -27,23 +27,37 @@ int main(void) {
 	//how to mask the uart interrupt, can it be done?
 	
 	//Initiate the Peripherals
-	initUART();
-	sei();
-	
+	initUARTInterruptBased();
+	//sei();
 	//change uart to interrupts
 	//ring buffer
+	//Implemented, not tested
+	
 	
 	//play a song
 	
 	
+	putByte(0xFF);
+	putByte(0xFF);
+	putByte(0xFF);
 	
+	putByte(0xFF);
+	putByte(0xFF);
+	putByte(0xFF);
 	
+	putByte(0xFF);
+	putByte(0xFF);
+	putByte(0xFF);
 	
 	while(1) {
 		for(char i = 32; i<90; i++){
+			/*midiCommandToQueue(0x00,_NOTEON, i);
+			_delay_ms(500);
+			midiCommandToQueue(0x00, _NOTEOFF, i); */
 			midiCommand(0x00,_NOTEON, i);
 			_delay_ms(500);
-			midiCommand(0x00, _NOTEOFF, i);
+			midiCommand(0x00, _NOTEOFF, i); 
+			
 		}	
 	}
 	
@@ -52,13 +66,14 @@ int main(void) {
 
 ISR(USART_TX_vect){
 	//Push the next element on the stack
-	if(isCircularQueueEmpty() == true)
+	if(isCircularQueueEmpty() == true){
+		UCSR0B &= ~(1 << TXCIE0);
 		return;
 		//need to disable the interrupt until the queue has data again.
-	else{
+	}else{
 		//load the next item on the queue into the uart register
 		putByte(readCircularQueue());
-		//putByte
+		//putByte not sure if it will work or not.
 	}
 	
 }
