@@ -19,6 +19,7 @@
  *
  *  Created on: 21-Jan-2014
  *      Author: Shrikant Giridhar
+ *		Modified by: Benjamin Nold
  */
 
 #include "uart.h"
@@ -46,6 +47,24 @@ void initUART(void)
 
 }
 
+/*! \brief Configures the UART using interrupts */
+void initUARTInterruptBased(void)
+{
+	// Not necessary; initialize anyway
+	DDRD |= _BV(PD1);
+	DDRD &= ~_BV(PD0);
+
+	// Set baud rate; lower byte and top nibble
+	UBRR0H = ((_UBRR) & 0xF00);
+	UBRR0L = (uint8_t) ((_UBRR) & 0xFF);
+
+	TX_START();
+	RX_START();
+
+	// Set frame format = 8-N-1
+	UCSR0C = (_DATA << UCSZ00);
+
+}
 /*! \brief Returns a byte from the serial buffer
  * 	Use this function if the RX interrupt is not enabled.
  * 	Returns 0 on empty buffer

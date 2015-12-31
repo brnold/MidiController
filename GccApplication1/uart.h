@@ -13,6 +13,7 @@
  *  Created on: 22-Jan-2014
  *      Author: Shrikant Giridhar https://gist.github.com/gshrikant/8549474
  *		Modified by: Benjamin Nold http://brnold.github.io	
+*		Benjamin Nold added interrupt based UART
  */
 
 #ifndef UART_H_
@@ -48,6 +49,7 @@
 
 /* Prototypes */
 void initUART(void);
+void initUARTInterruptBased(void);
 uint8_t getByte(void);
 void putByte(unsigned char data);
 void writeString(char *str);

@@ -6,19 +6,17 @@
  */ 
 
 #include "uart.h"
+#include "circularQueue.h"
 
 #ifndef MIDIHELPER_H_
 #define MIDIHELPER_H_
 
 #define _NOTEON 0x90
 #define _NOTEOFF 0x80
+#define _DEFAULTVELOCITY 0xFF
 
-/* https://www.arduino.cc/en/Tutorial/Midi */
-void midiNote(int cmd, int pitch, int velocity){
-	putByte(cmd);
-	putByte(pitch);
-	putByte(velocity);
-}
 
+void midiCommand(char channel, char cmd, char pitch);
+void midiCommandToQueue(char channel, char cmd, char pitch);
 
 #endif /* MIDIHELPER_H_ */

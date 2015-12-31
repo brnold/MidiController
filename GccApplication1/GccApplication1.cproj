@@ -108,7 +108,16 @@
     </ToolchainSettings>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="circularQueue.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="circularQueue.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="main.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="midiHelper.c">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="midiHelper.h">

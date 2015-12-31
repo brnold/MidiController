@@ -12,6 +12,8 @@
 #include "uart.h"
 #include <util/delay.h>
 #include "midiHelper.h"
+#include <avr/interrupt.h>
+#include "circularQueue.h"
 
 
 
@@ -22,25 +24,41 @@ int main(void) {
 	
 	/* Do I need to setup the clock? */
 	
+	//how to mask the uart interrupt, can it be done?
+	
 	//Initiate the Peripherals
 	initUART();
+	sei();
+	
+	//change uart to interrupts
+	//ring buffer
+	
+	//play a song
+	
 	
 	
 	
 	
 	while(1) {
 		for(char i = 32; i<90; i++){
-			midiNote(_NOTEON, i, (unsigned char)100);
+			midiCommand(0x00,_NOTEON, i);
 			_delay_ms(500);
-			midiNote(_NOTEOFF, i, (unsigned char)100);
-		}
-		
-		
-			
-		
+			midiCommand(0x00, _NOTEOFF, i);
+		}	
 	}
 	
 	
-	
-	
 	}
+
+ISR(USART_TX_vect){
+	//Push the next element on the stack
+	if(isCircularQueueEmpty() == true)
+		return;
+		//need to disable the interrupt until the queue has data again.
+	else{
+		//load the next item on the queue into the uart register
+		putByte(readCircularQueue());
+		//putByte
+	}
+	
+}
