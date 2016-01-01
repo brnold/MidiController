@@ -7,10 +7,10 @@
 
 #include "circularQueue.h"
 
-bool theQueue[_QUEUESIZE];
+unsigned char theQueue[_QUEUESIZE];
 volatile unsigned char qRead =0, qWrite =0, temporaryQueueStorage = 0;
 
-bool isCircularQueueEmpty(void){
+volatile bool isCircularQueueEmpty(void){
 	if(qWrite == qRead)
 		return true;
 	else

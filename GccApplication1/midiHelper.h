@@ -13,7 +13,7 @@
 
 #define _NOTEON 0x90
 #define _NOTEOFF 0x80
-#define _DEFAULTVELOCITY 0x90
+#define _DEFAULTVELOCITY 0x09
 
 
 void midiCommand(char channel, char cmd, char pitch);

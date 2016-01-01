@@ -16,7 +16,7 @@
 #include "circularQueue.h"
 
 
-
+volatile bool interruptBool ;
 
 
 int main(void) {
@@ -28,7 +28,7 @@ int main(void) {
 	
 	//Initiate the Peripherals
 	initUARTInterruptBased();
-	//sei();
+	sei();
 	//change uart to interrupts
 	//ring buffer
 	//Implemented, not tested
@@ -36,27 +36,16 @@ int main(void) {
 	
 	//play a song
 	
-	
-	putByte(0xFF);
-	putByte(0xFF);
-	putByte(0xFF);
-	
-	putByte(0xFF);
-	putByte(0xFF);
-	putByte(0xFF);
-	
-	putByte(0xFF);
-	putByte(0xFF);
-	putByte(0xFF);
-	
+	midiCommand(0x00, _NOTEOFF, 45);
+
 	while(1) {
 		for(char i = 32; i<90; i++){
-			/*midiCommandToQueue(0x00,_NOTEON, i);
+			midiCommandToQueue(0x00,_NOTEON, i);
+			midiCommandToQueue(0x01,_NOTEON, i);
 			_delay_ms(500);
-			midiCommandToQueue(0x00, _NOTEOFF, i); */
-			midiCommand(0x00,_NOTEON, i);
-			_delay_ms(500);
-			midiCommand(0x00, _NOTEOFF, i); 
+			midiCommandToQueue(0x00, _NOTEOFF, i); 
+			midiCommandToQueue(0x01, _NOTEOFF, i); 
+			
 			
 		}	
 	}
@@ -66,14 +55,14 @@ int main(void) {
 
 ISR(USART_TX_vect){
 	//Push the next element on the stack
-	if(isCircularQueueEmpty() == true){
+	
+	putByte(readCircularQueue());
+	interruptBool  = isCircularQueueEmpty();
+	if(interruptBool == true){
 		UCSR0B &= ~(1 << TXCIE0);
-		return;
+		//midiCommand(0x00, _NOTEOFF, 43);
+		
 		//need to disable the interrupt until the queue has data again.
-	}else{
-		//load the next item on the queue into the uart register
-		putByte(readCircularQueue());
-		//putByte not sure if it will work or not.
 	}
 	
 }

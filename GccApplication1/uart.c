@@ -65,7 +65,7 @@ void initUARTInterruptBased(void)
 	UCSR0C = (_DATA << UCSZ00);
 	
 	// Set up interrupt
-	//UCSR0B |= (1 << TXCIE0);
+	UCSR0B |= (1 << TXCIE0);
 
 }
 /*! \brief Returns a byte from the serial buffer
